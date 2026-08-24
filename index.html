@@ -89,8 +89,20 @@
     .portrait-grid{position:absolute;width:430px;height:510px;background-image:linear-gradient(rgba(255,255,255,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.15) 1px,transparent 1px);background-size:24px 24px;mix-blend-mode:screen;opacity:.55;transform:rotate(5deg);mask-image:linear-gradient(to bottom,transparent 0%,black 18%,black 85%,transparent 100%)}
     .portrait-frame{position:relative;width:min(390px,76vw);aspect-ratio:4/5;border:1px solid rgba(18,18,16,.18);background:var(--white);padding:12px;transform:rotate(4deg);box-shadow:28px 28px 0 rgba(18,18,16,.9);transition:transform .5s cubic-bezier(.2,.7,.2,1),filter .35s ease}
     .portrait-frame:hover{transform:rotate(0deg) translateY(-9px)}
-    .portrait-photo{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(.1) contrast(1.02);transition:filter .45s ease,transform .45s ease}
-        .portrait-caption{position:absolute;left:24px;bottom:22px;background:var(--white);border:1px solid var(--ink);padding:7px 9px;font:500 .59rem "DM Mono";letter-spacing:.08em;text-transform:uppercase}
+    .portrait-photo{
+      position:absolute;inset:0;width:100%;height:100%;
+      object-fit:cover;object-position:center top;display:block;
+      filter:grayscale(.1) contrast(1.02);
+      will-change:transform,opacity,clip-path,filter;
+      transform:scale(1);
+    }
+    .portrait-photo-current{z-index:1}
+    .portrait-photo-next{z-index:2;opacity:0;clip-path:circle(0% at 50% 50%);transform:scale(1.045);filter:blur(8px) saturate(.9)}
+    .portrait-frame.is-transitioning .portrait-photo-current{pointer-events:none}
+    .portrait-switch button.is-active{background:var(--ink);color:#fff;transform:translateY(-2px)}
+    .portrait-switch button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+        .portrait-media{position:absolute;inset:12px;overflow:hidden;border-radius:1px;background:var(--white)}
+    .portrait-caption{position:absolute;left:24px;bottom:22px;background:var(--white);border:1px solid var(--ink);padding:7px 9px;font:500 .59rem "DM Mono";letter-spacing:.08em;text-transform:uppercase}
     .portrait-orbit{position:absolute;width:470px;height:470px;border:1px dashed rgba(18,18,16,.2);border-radius:50%;animation:orbit 18s linear infinite}
     .portrait-orbit::before,.portrait-orbit::after{content:"";position:absolute;width:10px;height:10px;border-radius:50%}
     .portrait-orbit::before{background:var(--red);top:18px;left:46%;box-shadow:0 0 0 6px rgba(240,90,61,.12)}
@@ -217,6 +229,8 @@
     }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.reveal{opacity:1!important;transform:none!important}.cursor,.cursor-dot{display:none}}
   </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 </head>
 <body>
   <div class="progress" id="progress"></div>
@@ -267,12 +281,15 @@
           <div class="portrait-grid"></div>
           <span class="portrait-note">AI engineer / systems / product</span>
           <div class="portrait-frame" id="portraitFrame" data-mode="original">
-            <img src="assets/profile-color.png" id="portraitPhoto" alt="Niket Fuladi" class="portrait-photo">
+            <div class="portrait-media" aria-live="polite">
+              <img src="assets/profile-color.png" id="portraitPhotoCurrent" alt="Niket Fuladi" class="portrait-photo portrait-photo-current">
+              <img src="assets/profile-color.png" id="portraitPhotoNext" alt="" aria-hidden="true" class="portrait-photo portrait-photo-next">
+            </div>
             <div class="portrait-caption">NF / 2026</div>
             <div class="portrait-switch" aria-label="Portrait styles">
-              <button data-image="assets/profile-color.png" data-mode="original" aria-label="Original portrait">ORIGINAL</button>
+              <button class="is-active" data-image="assets/profile-color.png" data-mode="original" aria-label="Original portrait">ORIGINAL</button>
               <button data-image="assets/profile-pixel.png" data-mode="pixel" aria-label="Pixel portrait">PIXEL</button>
-              <button data-image="assets/profile-sketch.png" data-mode="drawing" aria-label="Drawing portrait">DRAWING</button>
+              <button data-image="assets/profile-drawing.png" data-mode="drawing" aria-label="Drawing portrait">DRAWING</button>
             </div>
           </div>
         </div>
@@ -421,13 +438,91 @@
     menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
     mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
 
-    // portrait modes
+    // portrait transitions
     const frame = document.getElementById('portraitFrame');
-    const portraitPhoto = document.getElementById('portraitPhoto');
-    frame.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
-      portraitPhoto.src = btn.dataset.image;
-      frame.dataset.mode = btn.dataset.image;
-    }));
+    const portraitCurrent = document.getElementById('portraitPhotoCurrent');
+    const portraitNext = document.getElementById('portraitPhotoNext');
+    const portraitButtons = [...frame.querySelectorAll('.portrait-switch button')];
+    let activePortrait = 'assets/profile-color.png';
+    let transitionTl = null;
+    const portraitCache = {};
+
+    portraitButtons.forEach(btn => {
+      const img = new Image();
+      img.src = btn.dataset.image;
+      portraitCache[btn.dataset.image] = img;
+      btn.addEventListener('click', () => switchPortrait(btn.dataset.image, btn));
+    });
+
+    function setActivePortraitButton(btn){
+      portraitButtons.forEach(b => b.classList.toggle('is-active', b === btn));
+    }
+
+    function switchPortrait(src, btn){
+      if (src === activePortrait) return;
+
+      const prefersReduced = reduce || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setActivePortraitButton(btn);
+
+      if (transitionTl) transitionTl.kill();
+
+      if (prefersReduced){
+        portraitCurrent.src = src;
+        activePortrait = src;
+        frame.dataset.mode = btn.dataset.mode;
+        portraitNext.style.opacity = '0';
+        portraitNext.style.clipPath = 'circle(0% at 50% 50%)';
+        return;
+      }
+
+      portraitNext.src = src;
+      portraitNext.style.opacity = '1';
+      portraitNext.style.clipPath = 'circle(0% at 50% 50%)';
+      portraitNext.style.transform = 'scale(1.045)';
+      portraitNext.style.filter = 'blur(8px) saturate(.9)';
+
+      transitionTl = gsap.timeline({
+        defaults: { overwrite: 'auto' },
+        onStart: () => frame.classList.add('is-transitioning'),
+        onComplete: () => {
+          portraitCurrent.src = src;
+          gsap.set(portraitCurrent, {
+            opacity: 1,
+            scale: 1,
+            filter: 'grayscale(.1) contrast(1.02)'
+          });
+          gsap.set(portraitNext, {
+            opacity: 0,
+            scale: 1.045,
+            clipPath: 'circle(0% at 50% 50%)',
+            filter: 'blur(8px) saturate(.9)'
+          });
+          activePortrait = src;
+          frame.dataset.mode = btn.dataset.mode;
+          frame.classList.remove('is-transitioning');
+        }
+      });
+
+      transitionTl
+        .to(portraitCurrent, {
+          duration: 0.56,
+          scale: 1.035,
+          filter: 'blur(3px) saturate(.92)',
+          ease: 'power2.out'
+        }, 0)
+        .to(portraitNext, {
+          duration: 0.92,
+          clipPath: 'circle(80% at 50% 50%)',
+          scale: 1,
+          filter: 'blur(0px) saturate(1)',
+          ease: 'power4.inOut'
+        }, 0)
+        .to(portraitCurrent, {
+          duration: 0.42,
+          opacity: 0,
+          ease: 'power2.inOut'
+        }, 0.16);
+    }
 
     // subtle tilt
     if (!reduce) {
