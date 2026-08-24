@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f1eee8">
+  <meta name="description" content="Niket Fuladi is an AI engineer building practical AI products, intelligent workflows, and useful user experiences.">
+  <title>Niket Fuladi | AI Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --paper:#f1eee8;
+      --paper-2:#e9e5de;
+      --ink:#121210;
+      --muted:#686762;
+      --line:rgba(18,18,16,.14);
+      --blue:#2455ff;
+      --red:#f05a3d;
+      --white:#fffdf8;
+      --dark:#151618;
+      --soft-blue:#e4eaff;
+      --content:1240px;
+      --mx:50vw;
+      --my:50vh;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Manrope,Arial,sans-serif;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E")}
+    a{color:inherit;text-decoration:none} button{font:inherit} ::selection{background:var(--blue);color:#fff}
+    .cursor{position:fixed;left:var(--mx);top:var(--my);width:22px;height:22px;margin:-11px 0 0 -11px;border:1px solid rgba(36,85,255,.45);border-radius:50%;pointer-events:none;z-index:1001;transition:transform .12s ease,width .2s ease,height .2s ease,margin .2s ease;mix-blend-mode:multiply}
+    .cursor-dot{position:fixed;left:var(--mx);top:var(--my);width:4px;height:4px;margin:-2px 0 0 -2px;background:var(--red);border-radius:50%;pointer-events:none;z-index:1002}
+    body.cursor-large .cursor{width:54px;height:54px;margin:-27px 0 0 -27px;background:rgba(36,85,255,.06);border-color:var(--blue)}
+
+    .progress{position:fixed;top:0;left:0;height:4px;background:var(--blue);transform-origin:left center;transform:scaleX(0);z-index:1000}
+    .nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);width:min(calc(100% - 32px),1240px);z-index:900;border:1px solid rgba(18,18,16,.14);background:rgba(248,246,241,.80);backdrop-filter:blur(20px) saturate(1.08);border-radius:22px;box-shadow:0 18px 48px rgba(18,18,16,.10);overflow:hidden}
+    .nav::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(36,85,255,.06),transparent 24%,transparent 72%,rgba(240,90,61,.06));}
+    .nav-inner{position:relative;height:74px;padding:0 16px;display:grid;grid-template-columns:1.05fr auto 1fr;align-items:center;gap:18px}
+    .brand{display:flex;align-items:center;gap:12px;white-space:nowrap;padding-left:4px}
+    .brand-mark{width:32px;height:32px;border:1px solid var(--ink);display:grid;place-items:center;border-radius:10px;background:var(--ink);color:#fff;font:700 .7rem "DM Mono";letter-spacing:-.04em;box-shadow:4px 4px 0 var(--red);transition:transform .25s ease,box-shadow .25s ease}
+    .brand:hover .brand-mark{transform:translate(-2px,-2px) rotate(-4deg);box-shadow:6px 6px 0 var(--blue)}
+    .brand-copy{display:flex;flex-direction:column;gap:3px}
+    .brand-name{font:800 .93rem "Space Grotesk";letter-spacing:-.04em}
+    .brand-role{font:500 .55rem "DM Mono";color:var(--muted);text-transform:uppercase;letter-spacing:.15em}
+    .nav-links{display:flex;gap:4px;align-items:center;justify-content:center;border:1px solid rgba(18,18,16,.10);background:rgba(255,255,255,.38);padding:4px;border-radius:14px}
+    .nav-links a{position:relative;padding:8px 11px;border-radius:10px;font:500 .61rem "DM Mono";text-transform:uppercase;letter-spacing:.08em;color:var(--muted);transition:color .2s,background .2s,transform .2s}
+    .nav-links a::before{content:attr(data-index);font-size:.48rem;color:var(--red);margin-right:6px;opacity:.75}
+    .nav-links a::after{content:"";position:absolute;left:10px;right:10px;bottom:5px;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:.25s}
+    .nav-links a:hover,.nav-links a.active{color:var(--ink);background:rgba(18,18,16,.06);transform:translateY(-1px)}
+    .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+    .nav-side{display:flex;align-items:center;justify-content:flex-end;gap:14px}
+    .nav-availability{font:500 .56rem "DM Mono";display:flex;align-items:center;gap:8px;color:var(--muted);padding:0 5px;white-space:nowrap;text-transform:uppercase;letter-spacing:.07em}
+    .nav-availability i{width:6px;height:6px;border-radius:50%;background:#3fa26a;box-shadow:0 0 0 4px rgba(63,162,106,.10);animation:navPulse 2.3s ease-in-out infinite}
+    .nav-cta{display:inline-flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--ink);border-radius:10px;font:700 .60rem "DM Mono";text-transform:uppercase;letter-spacing:.05em;background:var(--ink);color:#fff;transition:.22s}
+    .nav-cta span{transition:transform .22s}
+    .nav-cta:hover{background:var(--blue);border-color:var(--blue);transform:translateY(-2px)}
+    .nav-cta:hover span{transform:translate(3px,-2px)}
+    .menu-btn{display:none;border:0;background:transparent}
+
+    main{position:relative;z-index:2}
+    .hero{min-height:100svh;padding:150px 24px 80px;display:grid;align-items:center;position:relative;overflow:hidden}
+    .hero::after{content:"";position:absolute;right:-10vw;top:7vh;width:58vw;height:58vw;max-width:760px;max-height:760px;border:1px solid rgba(36,85,255,.14);border-radius:50%;transform:rotate(19deg);pointer-events:none}
+    .hero-inner{width:min(100%,var(--content));margin:auto;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+    .hero-left{position:relative;z-index:3}
+    .eyebrow{font:500 .67rem "DM Mono";text-transform:uppercase;letter-spacing:.14em;color:var(--blue);display:flex;align-items:center;gap:10px}
+    .eyebrow span{display:none}
+    h1{font:800 clamp(4.2rem,9vw,8.6rem)/.82 "Space Grotesk", sans-serif;letter-spacing:-.075em;margin:24px 0 18px;max-width:940px;text-transform:uppercase;position:relative;display:inline-block;background:linear-gradient(115deg,#101827 0%,#173a8f 26%,#74d7ff 44%,#f5fbff 50%,#5bb9ff 56%,#2b4fd6 72%,#101827 100%);background-size:240% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 1px 0 rgba(255,255,255,.5),0 8px 30px rgba(43,79,214,.10);animation:glassSweep 7s ease-in-out infinite}
+    h1 .line-a{display:inline}
+    h1 .line-b{display:inline;color:transparent;-webkit-text-stroke:1.6px var(--ink)}
+    .hero-role{font:700 clamp(1.05rem,2vw,1.35rem) "Space Grotesk";display:flex;align-items:center;gap:12px;margin-top:22px}
+    .hero-role::before{display:none}
+    .self-led{max-width:620px;margin:16px 0 0;font:600 clamp(1rem,1.5vw,1.18rem)/1.55 "Space Grotesk",sans-serif;letter-spacing:-.025em;color:var(--ink)}
+    .lede{max-width:700px;font-size:1.06rem;line-height:1.8;color:var(--muted);margin:22px 0 0}
+    .lede strong{color:var(--ink)}
+    .hero-actions{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:13px 17px;border-radius:12px;border:1px solid var(--ink);font-size:.78rem;font-weight:800;transition:.25s;position:relative;overflow:hidden}
+    .btn-primary{background:var(--ink);color:#fff}
+    .btn-secondary{background:transparent}
+    .btn:hover{transform:translateY(-3px)}
+    .btn .arrow{font-size:1rem;transition:transform .25s}
+    .btn:hover .arrow{transform:translate(4px,-3px)}
+    .hero-meta{margin-top:28px;display:flex;gap:20px;flex-wrap:wrap;color:var(--muted);font:500 .63rem "DM Mono";text-transform:uppercase;letter-spacing:.08em}
+    .hero-meta a:hover{color:var(--blue)}
+
+    .portrait-stage{position:relative;min-height:540px;display:grid;place-items:center}
+    .portrait-backdrop{position:absolute;width:470px;height:540px;background:var(--blue);clip-path:polygon(16% 0,100% 0,100% 83%,80% 100%,0 100%,0 18%);transform:rotate(-7deg);opacity:.95}
+    .portrait-grid{position:absolute;width:430px;height:510px;background-image:linear-gradient(rgba(255,255,255,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.15) 1px,transparent 1px);background-size:24px 24px;mix-blend-mode:screen;opacity:.55;transform:rotate(5deg);mask-image:linear-gradient(to bottom,transparent 0%,black 18%,black 85%,transparent 100%)}
+    .portrait-frame{position:relative;width:min(390px,76vw);aspect-ratio:4/5;border:1px solid rgba(18,18,16,.18);background:var(--white);padding:12px;transform:rotate(4deg);box-shadow:28px 28px 0 rgba(18,18,16,.9);transition:transform .5s cubic-bezier(.2,.7,.2,1),filter .35s ease}
+    .portrait-frame:hover{transform:rotate(0deg) translateY(-9px)}
+    .portrait-photo{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(.1) contrast(1.02);transition:filter .45s ease,transform .45s ease}
+    .portrait-frame[data-mode="ink"] .portrait-photo{filter:grayscale(1) contrast(1.3) brightness(1.02)}
+    .portrait-frame[data-mode="blue"] .portrait-photo{filter:grayscale(.3) sepia(.18) hue-rotate(170deg) saturate(2.5) contrast(1.05)}
+    .portrait-frame[data-mode="mono"] .portrait-photo{filter:grayscale(1) contrast(1.1)}
+    .portrait-caption{position:absolute;left:24px;bottom:22px;background:var(--white);border:1px solid var(--ink);padding:7px 9px;font:500 .59rem "DM Mono";letter-spacing:.08em;text-transform:uppercase}
+    .portrait-orbit{position:absolute;width:470px;height:470px;border:1px dashed rgba(18,18,16,.2);border-radius:50%;animation:orbit 18s linear infinite}
+    .portrait-orbit::before,.portrait-orbit::after{content:"";position:absolute;width:10px;height:10px;border-radius:50%}
+    .portrait-orbit::before{background:var(--red);top:18px;left:46%;box-shadow:0 0 0 6px rgba(240,90,61,.12)}
+    .portrait-orbit::after{background:var(--blue);bottom:25px;right:14%;box-shadow:0 0 0 6px rgba(36,85,255,.10)}
+    .portrait-switch{position:absolute;right:-2px;top:18px;display:flex;gap:5px;z-index:4}
+    .portrait-switch button{width:31px;height:31px;border-radius:50%;border:1px solid var(--ink);background:var(--paper);cursor:pointer;transition:.2s}
+    .portrait-switch button:hover{background:var(--ink);color:#fff;transform:translateY(-2px)}
+    .portrait-note{position:absolute;left:-10px;bottom:26px;font:500 .58rem "DM Mono";text-transform:uppercase;letter-spacing:.1em;color:var(--muted);writing-mode:vertical-rl;transform:rotate(180deg)}
+
+    .marquee{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);overflow:hidden;background:var(--ink);color:#fff;padding:10px 0}
+    .marquee-track{display:flex;width:max-content;animation:marquee 24s linear infinite}
+    .marquee span{font:500 .66rem "DM Mono";text-transform:uppercase;letter-spacing:.16em;white-space:nowrap;padding-right:46px}
+    .marquee b{color:var(--red);font-weight:500}
+
+    .section{width:min(calc(100% - 48px),var(--content));margin:0 auto;padding:120px 0 0}
+    .section-label{display:flex;justify-content:space-between;align-items:end;gap:30px;border-bottom:1px solid var(--ink);padding-bottom:18px;margin-bottom:38px}
+    .label-left{display:flex;gap:18px;align-items:center}
+    .index{font:500 .65rem "DM Mono";color:var(--red)}
+    .section-label h2{margin:0;font:700 clamp(2.4rem,5.6vw,5.6rem)/.9 "Space Grotesk";letter-spacing:-.07em}
+    .section-desc{max-width:430px;margin:0;color:var(--muted);line-height:1.65;font-size:.94rem}
+
+    .about{display:grid;grid-template-columns:1.15fr .85fr;gap:38px;align-items:start}
+    .about-copy{font-size:1.28rem;line-height:1.75;letter-spacing:-.02em}
+    .about-copy p{margin:0 0 24px}
+    .about-copy strong{color:var(--blue)}
+    .about-side{border-left:1px solid var(--ink);padding-left:26px}
+    .fact{padding:18px 0;border-bottom:1px solid var(--line)}
+    .fact:last-child{border-bottom:0}
+    .fact small{font:500 .58rem "DM Mono";text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:7px}
+    .fact strong{font:700 1.12rem "Space Grotesk"}
+
+    .work-shell{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+    .work-list{display:contents}
+    .work-item{padding:28px 24px;border:1px solid var(--ink);border-bottom:6px solid var(--ink);background:var(--white);width:100%;text-align:left;cursor:pointer;transition:.3s;display:flex;justify-content:space-between;gap:14px;align-items:flex-start;min-height:260px;flex-direction:column}
+    .work-item:last-child{border-bottom:6px solid var(--ink)}
+    .work-item:hover{background:var(--soft-blue);transform:translateY(-6px);box-shadow:10px 10px 0 rgba(18,18,16,.9)}
+    .work-item.active{background:var(--ink);color:#fff;transform:translateY(-6px);box-shadow:10px 10px 0 var(--red)}
+    .work-item.active .work-meta,.work-item.active .work-arrow{color:#cfd7ff}
+    .work-num{font:500 .62rem "DM Mono";color:var(--red);margin-bottom:10px}
+    .work-title{font:700 clamp(1.8rem,2.4vw,2.45rem) "Space Grotesk";letter-spacing:-.05em}
+    .work-meta{margin-top:7px;color:var(--muted);font:500 .62rem "DM Mono";text-transform:uppercase;letter-spacing:.08em}
+    .work-arrow{font-size:1.6rem;color:var(--muted);transition:transform .25s;margin-top:auto}
+
+    .work-card-copy{color:var(--muted);line-height:1.7;font-size:.9rem;margin:18px 0 0;max-width:31rem}
+    .work-card-footer{margin-top:auto;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;font:500 .6rem "DM Mono";text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+    .work-card-footer a{color:var(--ink);font-weight:700}
+    .work-item.active .work-card-footer a{color:#fff}
+    .work-item:hover .work-arrow{transform:translate(3px,-3px)}
+    .work-detail{display:none}
+    .work-detail::before{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border:1px solid rgba(255,255,255,.14);border-radius:50%}
+    .work-detail::after{content:"";position:absolute;left:-80px;bottom:-120px;width:280px;height:280px;border-radius:50%;background:rgba(36,85,255,.15);filter:blur(20px)}
+    .detail-top{display:flex;justify-content:space-between;gap:20px;align-items:start;position:relative;z-index:2}
+    .detail-index{font:500 .62rem "DM Mono";color:#b9c5ff;text-transform:uppercase;letter-spacing:.1em}
+    .detail-status{font:500 .62rem "DM Mono";padding:6px 8px;border:1px solid rgba(255,255,255,.2);border-radius:999px;color:#d9d9d7}
+    .detail-title{font:700 clamp(3rem,6vw,6rem)/.88 "Space Grotesk";letter-spacing:-.08em;margin:60px 0 16px;position:relative;z-index:2}
+    .detail-title span{color:var(--red)}
+    .detail-copy{max-width:680px;color:#c6c5c0;line-height:1.8;position:relative;z-index:2}
+    .detail-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:26px;position:relative;z-index:2}
+    .detail-chip{border:1px solid rgba(255,255,255,.15);padding:7px 9px;border-radius:999px;font:500 .6rem "DM Mono";color:#d7d7d2}
+    .detail-bottom{position:absolute;left:34px;right:34px;bottom:32px;display:flex;justify-content:space-between;align-items:end;gap:20px;z-index:2}
+    .detail-note{font:500 .6rem "DM Mono";text-transform:uppercase;letter-spacing:.09em;color:#8d8d87}
+    .detail-link{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--ink);padding:11px 13px;border-radius:10px;font:700 .66rem "DM Mono";transition:.22s}
+    .detail-link:hover{background:var(--blue);color:#fff;transform:translateY(-2px)}
+
+    .experience{display:grid;grid-template-columns:1fr;gap:54px;position:relative}
+    .timeline{display:none}
+    .exp-card{border-top:1px solid var(--ink);padding-top:18px;position:relative}
+    .exp-card:nth-child(2){margin-top:0}
+    .exp-year{font:500 .64rem "DM Mono";color:var(--red);text-transform:uppercase;letter-spacing:.12em}
+    .exp-card h3{font:700 clamp(2.5rem,4.2vw,4.6rem) "Space Grotesk";letter-spacing:-.06em;margin:12px 0 4px}
+    .exp-company{font:700 .83rem "DM Mono";color:var(--blue)}
+    .exp-card p{color:var(--muted);line-height:1.75;max-width:530px}
+    .exp-list{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+    .exp-list li{display:flex;gap:10px;color:#4d4c48;line-height:1.55;font-size:.85rem}
+    .exp-list li::before{content:"↗";color:var(--red);font-weight:800}
+
+    .skills{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .skill-board{border:1px solid var(--ink);background:var(--white);padding:24px;min-height:300px}
+    .skill-board h3{font:700 1.35rem "Space Grotesk";margin:0 0 20px;letter-spacing:-.04em}
+    .skill-buttons{display:flex;flex-wrap:wrap;gap:8px}
+    .skill-btn{border:1px solid var(--line);background:transparent;padding:9px 11px;border-radius:9px;cursor:pointer;font:500 .63rem "DM Mono";color:#54534e;transition:.2s}
+    .skill-btn:hover,.skill-btn.active{background:var(--ink);border-color:var(--ink);color:#fff;transform:translateY(-2px)}
+    .skill-display{margin-top:24px;min-height:82px;border-top:1px solid var(--line);padding-top:17px;color:var(--muted);font-size:.85rem;line-height:1.65}
+    .skill-display strong{color:var(--blue)}
+    .stack-note{padding:22px;background:var(--blue);color:#fff;min-height:300px;display:flex;flex-direction:column;justify-content:space-between}
+    .stack-note small{font:500 .6rem "DM Mono";text-transform:uppercase;letter-spacing:.1em}
+    .stack-note h3{font:700 clamp(2rem,3vw,3.3rem) "Space Grotesk";line-height:.96;letter-spacing:-.06em;margin:0}
+    .stack-note p{max-width:420px;color:#e7ebff;line-height:1.65;font-size:.9rem}
+
+    .contact{padding-bottom:80px}
+    .contact-card{background:var(--ink);color:#fff;padding:36px;min-height:420px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+    .contact-card::before{content:"LET'S MAKE SOMETHING USEFUL";position:absolute;right:-20px;bottom:-75px;font:700 8.8vw/.8 "Space Grotesk";letter-spacing:-.08em;color:rgba(255,255,255,.035);white-space:nowrap}
+    .contact-kicker{font:500 .62rem "DM Mono";text-transform:uppercase;letter-spacing:.12em;color:#9eaaff}
+    .contact-card h2{font:700 clamp(3.5rem,8vw,8rem)/.88 "Space Grotesk";letter-spacing:-.08em;margin:20px 0 0;max-width:920px;position:relative;z-index:2}
+    .contact-card h2 span{color:var(--red)}
+    .contact-row{display:flex;justify-content:space-between;gap:20px;align-items:end;position:relative;z-index:2}
+    .contact-row p{max-width:560px;color:#a7a6a1;line-height:1.65;font-size:.88rem;margin:0}
+    .contact-links{display:flex;gap:9px;flex-wrap:wrap}
+    .contact-link{padding:11px 13px;border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:10px;font:500 .64rem "DM Mono";transition:.2s}
+    .contact-link:hover{background:#fff;color:var(--ink);border-color:#fff;transform:translateY(-2px)}
+    footer{width:min(calc(100% - 48px),var(--content));margin:0 auto;padding:0 0 38px;display:flex;justify-content:space-between;color:var(--muted);font:500 .62rem "DM Mono";text-transform:uppercase;letter-spacing:.08em}
+
+    .reveal{opacity:0;transform:translateY(32px);transition:opacity .75s ease,transform .75s ease}.reveal.visible{opacity:1;transform:none}
+    .magnetic{transition:transform .16s ease}
+    .mobile-menu{display:none}
+
+    @keyframes glassSweep{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+    @keyframes orbit{to{transform:rotate(360deg)}}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+    @keyframes navPulse{0%,100%{box-shadow:0 0 0 4px rgba(63,162,106,.10)}50%{box-shadow:0 0 0 7px rgba(63,162,106,.035)}}
+
+    @media(max-width:980px){
+      .nav-links{display:none}.nav-availability{display:none}.nav-cta{display:none}.brand{min-width:auto}.menu-btn{display:block}
+      .hero-inner,.about,.skills,.work-shell,.experience{grid-template-columns:1fr}.hero{padding-top:130px}.portrait-stage{min-height:520px}.hero-inner{gap:20px}
+      .work-list{order:initial}.work-detail{display:none}.timeline{display:none}.exp-card:nth-child(2){margin-top:0}.contact-row{flex-direction:column;align-items:flex-start}.section-label{flex-direction:column;align-items:flex-start}
+      .mobile-menu{position:absolute;left:0;right:0;top:66px;padding:10px;border:1px solid var(--line);background:var(--paper);border-radius:14px;box-shadow:0 16px 40px rgba(18,18,16,.12)}
+      .mobile-menu.open{display:grid}.mobile-menu a{padding:12px;border-radius:9px;font:500 .7rem "DM Mono";text-transform:uppercase}.mobile-menu a:hover{background:var(--ink);color:#fff}
+    }
+    @media(max-width:640px){
+      .hero{padding-inline:18px}.section,footer{width:min(calc(100% - 36px),var(--content))}.section{padding-top:90px}.nav{top:10px;width:calc(100% - 20px)}
+      h1{font-size:clamp(3.6rem,14vw,6.2rem)}.portrait-backdrop{width:320px;height:430px}.portrait-orbit{width:350px;height:350px}.portrait-frame{width:min(320px,84vw);box-shadow:18px 18px 0 rgba(18,18,16,.9)}
+      .work-detail{min-height:500px;padding:24px}.detail-title{margin-top:42px}.detail-bottom{left:24px;right:24px;bottom:24px}.section-label h2{font-size:3rem}.about-copy{font-size:1.08rem}.contact-card{padding:25px;min-height:380px}
+      footer{flex-direction:column;gap:8px}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.reveal{opacity:1!important;transform:none!important}.cursor,.cursor-dot{display:none}}
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <div class="cursor" id="cursor"></div><div class="cursor-dot"></div>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#home" aria-label="Niket Fuladi home">
+        <span class="brand-mark">NF</span>
+        <span class="brand-copy"><span class="brand-name">Niket Fuladi</span><span class="brand-role">AI Engineer</span></span>
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Primary navigation">
+        <a href="#about" data-index="01">About</a>
+        <a href="#work" data-index="02">Work</a>
+        <a href="#experience" data-index="03">Experience</a>
+        <a href="#skills" data-index="04">Stack</a>
+        <a href="#contact" data-index="05">Contact</a>
+      </nav>
+      <div class="nav-side">
+        <div class="nav-availability"><i></i> Available for AI work</div>
+        <a class="nav-cta magnetic" href="#contact">Let's talk <span>↗</span></a>
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+      </div>
+      <div class="mobile-menu" id="mobileMenu"><a href="#about">About</a><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Stack</a><a href="#contact">Contact</a></div>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <div class="eyebrow"><span></span> Building useful intelligence</div>
+          <h1><span class="line-a">NIKET FULADI</span></h1>
+          <div class="hero-role"><h3>AI Engineer</h3></div>
+          <p class="self-led">Solving problems that I face myself, then turning the useful ones into AI products.</p>
+          <p class="lede"><strong>I build AI products that move beyond demos.</strong> My work sits where language models, automation, data, and product experience meet, turning messy workflows into clearer tools that people can actually use.</p>
+          <div class="hero-actions">
+            <a href="#work" class="btn btn-primary magnetic">See selected work <span class="arrow">↗</span></a>
+            <a href="https://www.linkedin.com/in/niket-fuladi/" target="_blank" rel="noopener" class="btn btn-secondary magnetic">LinkedIn <span class="arrow">↗</span></a>
+            <a href="https://github.com/NiketF" target="_blank" rel="noopener" class="btn btn-secondary magnetic">GitHub <span class="arrow">↗</span></a>
+          </div>
+          <div class="hero-meta"><a href="https://github.com/NiketF" target="_blank" rel="noopener">github.com/NiketF</a><span>AI / Automation / Product</span><span>Nagpur, India</span></div>
+        </div>
+
+        <div class="portrait-stage">
+          <div class="portrait-orbit"></div>
+          <div class="portrait-backdrop"></div>
+          <div class="portrait-grid"></div>
+          <span class="portrait-note">AI engineer / systems / product</span>
+          <div class="portrait-frame" id="portraitFrame" data-mode="original">
+            <img src="assets/profile.png" alt="Niket Fuladi" class="portrait-photo">
+            <div class="portrait-caption">NF / 2026</div>
+            <div class="portrait-switch" aria-label="Portrait styles">
+              <button data-mode="original" aria-label="Original portrait">01</button>
+              <button data-mode="ink" aria-label="Ink portrait">02</button>
+              <button data-mode="blue" aria-label="Blue portrait">03</button>
+              <button data-mode="mono" aria-label="Mono portrait">04</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee"><div class="marquee-track"><span>AI ENGINEERING <b>+</b> PRODUCT THINKING <b>+</b> SYSTEMS <b>+</b> EXPERIMENTATION <b>+</b> AI ENGINEERING <b>+</b> PRODUCT THINKING <b>+</b> SYSTEMS <b>+</b> EXPERIMENTATION <b>+</b></span><span>AI ENGINEERING <b>+</b> PRODUCT THINKING <b>+</b> SYSTEMS <b>+</b> EXPERIMENTATION <b>+</b> AI ENGINEERING <b>+</b> PRODUCT THINKING <b>+</b> SYSTEMS <b>+</b> EXPERIMENTATION <b>+</b></span></div></div>
+
+    <section class="section reveal" id="about">
+      <div class="section-label"><div class="label-left"><span class="index">01</span><h2>About</h2></div><p class="section-desc">A builder who likes the space between an interesting AI idea and the details required to make it useful.</p></div>
+      <div class="about">
+        <div class="about-copy">
+          <p>I work on <strong>AI applications</strong> across LLM workflows, NLP, automation, document intelligence, and user-facing product experiences. I am especially interested in building systems that can reason with information without losing sight of how that information should be handled.</p>
+          <p>Alongside AI engineering, I have formal foundations in <strong>cybersecurity</strong> through my degree specialization. That gives me a practical second lens on the systems I build, from privacy and data handling to access, trust, and responsible use of AI. I bring those principles into product decisions without losing focus on usability or delivery.</p>
+          <p>I enjoy the full loop: understanding a problem, prototyping the workflow, testing the experience, then tightening the system until it feels obvious to use.</p>
+        </div>
+        <div class="about-side">
+          <div class="fact"><small>Current focus</small><strong>AI engineering and Product AI</strong></div>
+          <div class="fact"><small>Working style</small><strong>Problem → Research → Solve → Deploy</strong></div>
+          <div class="fact"><small>Education</small><strong>BTech in Cyber Security</strong></div>
+          <div class="fact"><small>Expected graduation</small><strong>2027</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="work">
+      <div class="section-label"><div class="label-left"><span class="index">02</span><h2>Selected work</h2></div><p class="section-desc">A small set of builds that show how I think about language, systems, and useful AI experiences.</p></div>
+      <div class="work-shell">
+        <article class="work-item active">
+          <div><div class="work-num">BUILD 01 · PUBLIC</div><div class="work-title">PrivacyLens</div><div class="work-meta">NLP / policy analysis</div></div>
+          <p class="work-card-copy">An NLP system for analysing privacy policy language and surfacing useful risk signals from clauses with transformer based classification and a structured annotation workflow.</p>
+          <div class="work-card-footer"><span>RoBERTa · HuggingFace · NLP</span><a href="https://github.com/NiketF/PrivacyLens" target="_blank" rel="noopener">GitHub ↗</a></div>
+        </article>
+        <article class="work-item">
+          <div><div class="work-num">BUILD 02 · IN DEVELOPMENT</div><div class="work-title">SAGE</div><div class="work-meta">Storage Analysis and Guidance Engine</div></div>
+          <p class="work-card-copy">A Storage Sentinel concept for understanding clutter, guiding better storage decisions, and automating repetitive housekeeping with an AI first reasoning layer.</p>
+          <div class="work-card-footer"><span>AI assistant · storage intelligence</span><span>Private build</span></div>
+        </article>
+        <article class="work-item">
+          <div><div class="work-num">BUILD 03 · PUBLIC</div><div class="work-title">Repo2Resume</div><div class="work-meta">Developer tooling / NLP</div></div>
+          <p class="work-card-copy">A GitHub to resume pipeline that turns project documentation into concise, role relevant resume bullets with lightweight NLP and ranking workflows.</p>
+          <div class="work-card-footer"><span>HuggingFace · GitHub API · Gradio</span><a href="https://github.com/NiketF/Repo2Resume" target="_blank" rel="noopener">GitHub ↗</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="experience">
+      <div class="section-label"><div class="label-left"><span class="index">03</span><h2>Experience</h2></div><p class="section-desc">The work that pushed me from building experiments to thinking about real users and real workflows.</p></div>
+      <div class="experience">
+        <div class="timeline"></div>
+        <article class="exp-card">
+          <div class="exp-year">AI ENGINEER INTERN / SKILLAB</div>
+          <h3>AI-led recruitment</h3>
+          <div class="exp-company">SkilLab</div>
+          <p>I worked across the recruitment journey, applying AI where it could reduce repetitive work and give users better guidance after a resume was submitted.</p>
+          <ul class="exp-list"><li>Automated resume scanning, scoring, and recommendations</li><li>Developed interview preparation kits for users</li><li>Built an e-book generator for community content</li><li>Tested site UI and contributed to the post-scan home-page UX</li></ul>
+        </article>
+        <article class="exp-card">
+          <div class="exp-year">DATA SCIENCE INTERN</div>
+          <h3>From data to decisions</h3>
+          <div class="exp-company">Sprout Lab</div>
+          <p>Worked through data analysis and machine-learning workflows while building a stronger understanding of how models become useful in an application.</p>
+          <ul class="exp-list"><li>Data exploration and analysis</li><li>Machine-learning experimentation</li><li>Insight generation and iteration</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="skills">
+      <div class="section-label"><div class="label-left"><span class="index">04</span><h2>Stack</h2></div><p class="section-desc">A practical toolkit for moving from an idea to an AI feature, workflow, or product.</p></div>
+      <div class="skills">
+        <article class="skill-board">
+          <h3>AI engineering</h3>
+          <div class="skill-buttons" id="skillButtonsA">
+            <button class="skill-btn active" data-skill="Python">Python</button><button class="skill-btn" data-skill="LLM APIs">LLM APIs</button><button class="skill-btn" data-skill="Gemini API">Gemini API</button><button class="skill-btn" data-skill="OpenRouter API">OpenRouter API</button><button class="skill-btn" data-skill="LangChain">LangChain</button><button class="skill-btn" data-skill="MCP">MCP</button><button class="skill-btn" data-skill="NLP">NLP</button><button class="skill-btn" data-skill="HuggingFace">HuggingFace</button><button class="skill-btn" data-skill="Transformers">Transformers</button><button class="skill-btn" data-skill="Scikit-learn">Scikit-learn</button>
+          </div>
+          <div class="skill-display" id="skillDisplayA"><strong>Python</strong> is where I prototype ideas quickly and turn them into working AI application code.</div>
+        </article>
+        <article class="skill-board">
+          <h3>Tools & product stack</h3>
+          <div class="skill-buttons" id="skillButtonsB">
+            <button class="skill-btn" data-skill="Antigravity">Antigravity</button><button class="skill-btn" data-skill="Claude">Claude</button><button class="skill-btn" data-skill="ChatGPT">ChatGPT</button><button class="skill-btn" data-skill="Gemini">Gemini</button><button class="skill-btn" data-skill="GitHub Copilot">GitHub Copilot</button><button class="skill-btn" data-skill="FastAPI">FastAPI</button><button class="skill-btn" data-skill="Streamlit">Streamlit</button><button class="skill-btn" data-skill="Playwright">Playwright</button><button class="skill-btn" data-skill="SQL">SQL</button><button class="skill-btn" data-skill="GitHub">GitHub</button><button class="skill-btn" data-skill="React">React</button><button class="skill-btn" data-skill="Automation">Automation</button>
+          </div>
+          <div class="skill-display" id="skillDisplayB"><strong>Antigravity</strong> helps me move quickly when exploring ideas, code structure, and implementation paths.</div>
+        </article>
+        <aside class="stack-note">
+          <small>How I use the stack</small>
+          <h3>Tools are only useful when the workflow is clear.</h3>
+          <p>I choose the model, framework, API, and interface around the problem. That keeps the system focused and the user experience simple.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section contact reveal" id="contact">
+      <div class="contact-card">
+        <div><div class="contact-kicker">05 / Contact</div><h2>Let's build something <span>useful.</span></h2></div>
+        <div class="contact-row"><p>Open to AI engineering roles, product-focused opportunities, and collaborations where the problem is worth getting curious about.</p><div class="contact-links"><a href="https://github.com/NiketF" target="_blank" rel="noopener" class="contact-link magnetic">GitHub ↗</a><a href="https://www.linkedin.com/in/niket-fuladi/" target="_blank" rel="noopener" class="contact-link magnetic">LinkedIn ↗</a></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>© 2026 Niket Fuladi</span><span>AI engineering / Product thinking / continuous learning</span></footer>
+
+  <script>
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // pointer
+    if (!reduce) {
+      window.addEventListener('pointermove', e => {
+        document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+        document.documentElement.style.setProperty('--my', e.clientY + 'px');
+      }, {passive:true});
+      document.querySelectorAll('a,button,.portrait-frame').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-large'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-large'));
+      });
+    }
+
+    // scroll progress + active nav
+    const progress = document.getElementById('progress');
+    const sections = [...document.querySelectorAll('main section[id]')];
+    function onScroll(){
+      const total = document.documentElement.scrollHeight - innerHeight;
+      progress.style.transform = `scaleX(${total > 0 ? scrollY/total : 0})`;
+    }
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, {threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const navAnchors = [...document.querySelectorAll('.nav-links a')];
+    const navObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          navAnchors.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+        }
+      });
+    }, {rootMargin:'-40% 0px -45% 0px',threshold:0});
+    sections.forEach(s => navObserver.observe(s));
+
+    // mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+    // portrait modes
+    const frame = document.getElementById('portraitFrame');
+    frame.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+      frame.dataset.mode = btn.dataset.mode;
+    }));
+
+    // subtle tilt
+    if (!reduce) {
+      frame.addEventListener('pointermove', e => {
+        const r = frame.getBoundingClientRect();
+        const x = (e.clientX-r.left)/r.width - .5;
+        const y = (e.clientY-r.top)/r.height - .5;
+        frame.style.transform = `rotate(${x*7}deg) rotateX(${y*-7}deg) rotateY(${x*8}deg) translateY(-5px)`;
+      });
+      frame.addEventListener('pointerleave', () => frame.style.transform='');
+      document.querySelectorAll('.magnetic').forEach(el => {
+        el.addEventListener('pointermove', e => {
+          const r=el.getBoundingClientRect();
+          const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+          el.style.transform=`translate(${x*8}px,${y*6}px)`;
+        });
+        el.addEventListener('pointerleave', ()=>el.style.transform='');
+      });
+    }
+
+    // work selector
+    const data = {
+      privacy:{index:'BUILD 01 / PUBLIC',status:'Research',title:'Privacy<span>Lens</span>',copy:'An NLP system for analysing privacy policy language and surfacing useful risk signals from clauses using transformer-based classification and a structured annotation workflow.',chips:['RoBERTa','HuggingFace','NLP','Streamlit'],note:'Turning dense policy language into structured signals.',link:'https://github.com/NiketF/PrivacyLens',button:'View on GitHub ↗'},
+      sage:{index:'BUILD 02 / IN DEVELOPMENT',status:'Building',title:'SAGE',copy:'Storage Analysis and Guidance Engine, the Storage Sentinel for intelligent file organisation. The direction is a local-first assistant that helps users understand clutter, make better storage decisions, and automate repetitive housekeeping.',chips:['AI assistant','Storage intelligence','Python','Automation'],note:'Designing the reasoning and interaction layer for local storage guidance.',link:'#',button:'Private build / no repository'},
+      repo:{index:'BUILD 03 / PUBLIC',status:'Public',title:'Repo<span>2Resume</span>',copy:'A GitHub-to-resume pipeline that turns project documentation into concise, role-relevant resume bullets with lightweight NLP and ranking workflows.',chips:['HuggingFace','GitHub API','NLP','Gradio'],note:'Turning a developer artifact into a clearer career story.',link:'https://github.com/NiketF/Repo2Resume',button:'View on GitHub ↗'}
+    };
+    const detailIndex=document.getElementById('detailIndex'),detailStatus=document.getElementById('detailStatus'),detailTitle=document.getElementById('detailTitle'),detailCopy=document.getElementById('detailCopy'),detailChips=document.getElementById('detailChips'),detailNote=document.getElementById('detailNote'),detailLink=document.getElementById('detailLink');
+    document.querySelectorAll('.work-item').forEach(btn=>btn.addEventListener('click',()=>{
+      document.querySelectorAll('.work-item').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+      const d=data[btn.dataset.project]; detailIndex.textContent=d.index;detailStatus.textContent=d.status;detailTitle.innerHTML=d.title;detailCopy.textContent=d.copy;detailNote.textContent=d.note;detailLink.href=d.link;detailLink.textContent=d.button;
+      detailChips.innerHTML=d.chips.map(c=>`<span class="detail-chip">${c}</span>`).join('');
+      detailLink.style.pointerEvents=d.link==='#'?'none':'auto';detailLink.style.opacity=d.link==='#'?'.55':'1';
+      document.getElementById('workDetail').animate([{opacity:.68,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:280,easing:'cubic-bezier(.2,.7,.2,1)'});
+    }));
+
+    // skill interactions
+    const descriptions={
+      'Python':'Python is where I prototype ideas quickly and turn them into working AI application code.','LLM APIs':'I use model APIs as building blocks for real product flows, not just chat interfaces.','Gemini API':'Useful when a workflow needs fast multimodal or reasoning-heavy model calls.','OpenRouter API':'A practical way to experiment across models without rebuilding the integration layer.','LangChain':'Useful for connecting model calls with retrieval, tools, and structured workflows.','MCP':'A direction I am exploring for giving AI systems reliable access to context and tools.','NLP':'I work with text as structured data: classification, extraction, ranking, and summarisation.','HuggingFace':'A core part of my experimentation stack for models, datasets, and NLP workflows.','Transformers':'I use transformer-based approaches when the problem benefits from learned language representations.','Scikit-learn':'Helpful for fast baselines and structured ML experimentation.','Antigravity':'Useful when exploring implementation paths, code structure, and rapid iteration.','Claude':'A strong partner for reasoning through complex product and engineering problems.','ChatGPT':'Useful for exploration, coding, prototyping, and thinking through user workflows.','Gemini':'Part of my day-to-day toolkit for fast multimodal and application experimentation.','GitHub Copilot':'Helps speed up routine implementation while keeping the architecture intentional.','FastAPI':'My go-to when an AI workflow needs a clean Python API layer.','Streamlit':'Useful for quickly turning a model or workflow into a testable product surface.','Playwright':'I use it to validate browser experiences and reduce manual UI checking.','SQL':'A foundation for working with structured product and application data.','GitHub':'Where projects, iteration, and documentation come together.','React':'Useful when an AI interface needs richer client-side interaction.','Automation':'I like removing repetitive steps so users spend time on decisions, not busywork.'
+    };
+    function setupSkills(containerId, displayId){
+      const container=document.getElementById(containerId),display=document.getElementById(displayId);
+      container.querySelectorAll('.skill-btn').forEach(btn=>btn.addEventListener('click',()=>{
+        container.querySelectorAll('.skill-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+        display.innerHTML=`<strong>${btn.dataset.skill}</strong> ${descriptions[btn.dataset.skill]||''}`;
+      }));
+    }
+    setupSkills('skillButtonsA','skillDisplayA');setupSkills('skillButtonsB','skillDisplayB');
+  </script>
+</body>
+</html>
