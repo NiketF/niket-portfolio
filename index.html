@@ -97,8 +97,11 @@
       transform:scale(1);
     }
     .portrait-photo-current{z-index:1}
-    .portrait-photo-next{z-index:2;opacity:0;clip-path:circle(0% at 50% 50%);transform:scale(1.045);filter:blur(8px) saturate(.9)}
+    .portrait-photo-next{z-index:2;opacity:0;clip-path:inset(0 0 100% 0 round 1px);transform:scale(1.06);filter:blur(10px) saturate(.88);will-change:clip-path,transform,opacity,filter}
     .portrait-frame.is-transitioning .portrait-photo-current{pointer-events:none}
+    .portrait-frame::after{content:"";position:absolute;inset:12px;z-index:3;pointer-events:none;opacity:0;background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.32) 48%,transparent 70%);transform:translateX(-120%) skewX(-12deg)}
+    .portrait-frame.is-transitioning::after{animation:portraitSheen 1.15s cubic-bezier(.22,.61,.36,1) forwards}
+    .portrait-frame.is-transitioning{filter:saturate(1.02)}
     .portrait-switch button.is-active{background:var(--ink);color:#fff;transform:translateY(-2px)}
     .portrait-switch button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
         .portrait-media{position:absolute;inset:12px;overflow:hidden;border-radius:1px;background:var(--white)}
@@ -213,6 +216,7 @@
     @keyframes orbit{to{transform:rotate(360deg)}}
     @keyframes marquee{to{transform:translateX(-50%)}}
     @keyframes navPulse{0%,100%{box-shadow:0 0 0 4px rgba(63,162,106,.10)}50%{box-shadow:0 0 0 7px rgba(63,162,106,.035)}}
+    @keyframes portraitSheen{0%{opacity:0;transform:translateX(-120%) skewX(-12deg)}15%{opacity:1}100%{opacity:0;transform:translateX(125%) skewX(-12deg)}}
 
     @media(max-width:980px){
       .nav-links{display:none}.nav-availability{display:none}.nav-cta{display:none}.brand{min-width:auto}.menu-btn{display:block}
@@ -489,13 +493,15 @@
           gsap.set(portraitCurrent, {
             opacity: 1,
             scale: 1,
+            x: 0,
             filter: 'grayscale(.1) contrast(1.02)'
           });
           gsap.set(portraitNext, {
             opacity: 0,
-            scale: 1.045,
-            clipPath: 'circle(0% at 50% 50%)',
-            filter: 'blur(8px) saturate(.9)'
+            scale: 1.06,
+            x: 0,
+            clipPath: 'inset(0 0 100% 0 round 1px)',
+            filter: 'blur(10px) saturate(.88)'
           });
           activePortrait = src;
           frame.dataset.mode = btn.dataset.mode;
@@ -503,25 +509,44 @@
         }
       });
 
+      // A slow overlap, soft blur, and flowing mask create the editorial feel.
+      // The new image enters from below while the old image eases away, rather than crossfading instantly.
       transitionTl
         .to(portraitCurrent, {
-          duration: 0.56,
-          scale: 1.035,
-          filter: 'blur(3px) saturate(.92)',
-          ease: 'power2.out'
+          duration: 1.15,
+          scale: 0.985,
+          x: -10,
+          opacity: 0.22,
+          filter: 'blur(2.2px) saturate(.9)',
+          ease: 'power3.inOut'
         }, 0)
         .to(portraitNext, {
-          duration: 0.92,
-          clipPath: 'circle(80% at 50% 50%)',
+          duration: 1.2,
+          opacity: 1,
+          x: 0,
           scale: 1,
+          clipPath: 'inset(0% 0% 0% 0% round 1px)',
           filter: 'blur(0px) saturate(1)',
-          ease: 'power4.inOut'
-        }, 0)
-        .to(portraitCurrent, {
-          duration: 0.42,
-          opacity: 0,
-          ease: 'power2.inOut'
-        }, 0.16);
+          ease: 'power4.out'
+        }, 0.08)
+        .to(portraitNext, {
+          duration: 0.45,
+          scale: 0.998,
+          ease: 'sine.out'
+        }, 0.88)
+        .to(portraitFrameSafe(), {
+          duration: 0.55,
+          rotate: 0,
+          scale: 1.005,
+          ease: 'power3.out'
+        }, 0.22)
+        .to(portraitNext, {
+          duration: 0.32,
+          scale: 1,
+          ease: 'power2.out'
+        }, 1.0);
+
+      function portraitFrameSafe(){ return frame; }
     }
 
     // subtle tilt
