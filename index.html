@@ -90,16 +90,13 @@
     .portrait-frame{position:relative;width:min(390px,76vw);aspect-ratio:4/5;border:1px solid rgba(18,18,16,.18);background:var(--white);padding:12px;transform:rotate(4deg);box-shadow:28px 28px 0 rgba(18,18,16,.9);transition:transform .5s cubic-bezier(.2,.7,.2,1),filter .35s ease}
     .portrait-frame:hover{transform:rotate(0deg) translateY(-9px)}
     .portrait-photo{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(.1) contrast(1.02);transition:filter .45s ease,transform .45s ease}
-    .portrait-frame[data-mode="ink"] .portrait-photo{filter:grayscale(1) contrast(1.3) brightness(1.02)}
-    .portrait-frame[data-mode="blue"] .portrait-photo{filter:grayscale(.3) sepia(.18) hue-rotate(170deg) saturate(2.5) contrast(1.05)}
-    .portrait-frame[data-mode="mono"] .portrait-photo{filter:grayscale(1) contrast(1.1)}
-    .portrait-caption{position:absolute;left:24px;bottom:22px;background:var(--white);border:1px solid var(--ink);padding:7px 9px;font:500 .59rem "DM Mono";letter-spacing:.08em;text-transform:uppercase}
+        .portrait-caption{position:absolute;left:24px;bottom:22px;background:var(--white);border:1px solid var(--ink);padding:7px 9px;font:500 .59rem "DM Mono";letter-spacing:.08em;text-transform:uppercase}
     .portrait-orbit{position:absolute;width:470px;height:470px;border:1px dashed rgba(18,18,16,.2);border-radius:50%;animation:orbit 18s linear infinite}
     .portrait-orbit::before,.portrait-orbit::after{content:"";position:absolute;width:10px;height:10px;border-radius:50%}
     .portrait-orbit::before{background:var(--red);top:18px;left:46%;box-shadow:0 0 0 6px rgba(240,90,61,.12)}
     .portrait-orbit::after{background:var(--blue);bottom:25px;right:14%;box-shadow:0 0 0 6px rgba(36,85,255,.10)}
     .portrait-switch{position:absolute;right:-2px;top:18px;display:flex;gap:5px;z-index:4}
-    .portrait-switch button{width:31px;height:31px;border-radius:50%;border:1px solid var(--ink);background:var(--paper);cursor:pointer;transition:.2s}
+    .portrait-switch button{height:31px;min-width:31px;padding:0 8px;border-radius:999px;border:1px solid var(--ink);background:var(--paper);cursor:pointer;transition:.2s;font:500 .48rem "DM Mono";letter-spacing:.06em}
     .portrait-switch button:hover{background:var(--ink);color:#fff;transform:translateY(-2px)}
     .portrait-note{position:absolute;left:-10px;bottom:26px;font:500 .58rem "DM Mono";text-transform:uppercase;letter-spacing:.1em;color:var(--muted);writing-mode:vertical-rl;transform:rotate(180deg)}
 
@@ -270,13 +267,12 @@
           <div class="portrait-grid"></div>
           <span class="portrait-note">AI engineer / systems / product</span>
           <div class="portrait-frame" id="portraitFrame" data-mode="original">
-            <img src="assets/profile.png" alt="Niket Fuladi" class="portrait-photo">
+            <img src="assets/profile-color.png" id="portraitPhoto" alt="Niket Fuladi" class="portrait-photo">
             <div class="portrait-caption">NF / 2026</div>
             <div class="portrait-switch" aria-label="Portrait styles">
-              <button data-mode="original" aria-label="Original portrait">01</button>
-              <button data-mode="ink" aria-label="Ink portrait">02</button>
-              <button data-mode="blue" aria-label="Blue portrait">03</button>
-              <button data-mode="mono" aria-label="Mono portrait">04</button>
+              <button data-image="assets/profile-color.png" data-mode="original" aria-label="Original portrait">ORIGINAL</button>
+              <button data-image="assets/profile-pixel.png" data-mode="pixel" aria-label="Pixel portrait">PIXEL</button>
+              <button data-image="assets/profile-sketch.png" data-mode="drawing" aria-label="Drawing portrait">DRAWING</button>
             </div>
           </div>
         </div>
@@ -328,7 +324,7 @@
       <div class="experience">
         <div class="timeline"></div>
         <article class="exp-card">
-          <div class="exp-year">AI-led recruitment/div>
+          <div class="exp-year">AI-led recruitment</div>
           <h3>AI ENGINEER INTERN</h3>
           <div class="exp-company"><h4>SkilLab</h4></div>
           <p>I worked across the recruitment journey, applying AI where it could reduce repetitive work and give users better guidance after a resume was submitted.</p>
@@ -427,8 +423,10 @@
 
     // portrait modes
     const frame = document.getElementById('portraitFrame');
+    const portraitPhoto = document.getElementById('portraitPhoto');
     frame.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
-      frame.dataset.mode = btn.dataset.mode;
+      portraitPhoto.src = btn.dataset.image;
+      frame.dataset.mode = btn.dataset.image;
     }));
 
     // subtle tilt
@@ -449,21 +447,6 @@
         el.addEventListener('pointerleave', ()=>el.style.transform='');
       });
     }
-
-    // work selector
-    const data = {
-      privacy:{index:'BUILD 01 / PUBLIC',status:'Research',title:'Privacy<span>Lens</span>',copy:'An NLP system for analysing privacy policy language and surfacing useful risk signals from clauses using transformer-based classification and a structured annotation workflow.',chips:['RoBERTa','HuggingFace','NLP','Streamlit'],note:'Turning dense policy language into structured signals.',link:'https://github.com/NiketF/PrivacyLens',button:'View on GitHub ↗'},
-      sage:{index:'BUILD 02 / IN DEVELOPMENT',status:'Building',title:'SAGE',copy:'Storage Analysis and Guidance Engine, the Storage Sentinel for intelligent file organisation. The direction is a local-first assistant that helps users understand clutter, make better storage decisions, and automate repetitive housekeeping.',chips:['AI assistant','Storage intelligence','Python','Automation'],note:'Designing the reasoning and interaction layer for local storage guidance.',link:'#',button:'Private build / no repository'},
-      repo:{index:'BUILD 03 / PUBLIC',status:'Public',title:'Repo<span>2Resume</span>',copy:'A GitHub-to-resume pipeline that turns project documentation into concise, role-relevant resume bullets with lightweight NLP and ranking workflows.',chips:['HuggingFace','GitHub API','NLP','Gradio'],note:'Turning a developer artifact into a clearer career story.',link:'https://github.com/NiketF/Repo2Resume',button:'View on GitHub ↗'}
-    };
-    const detailIndex=document.getElementById('detailIndex'),detailStatus=document.getElementById('detailStatus'),detailTitle=document.getElementById('detailTitle'),detailCopy=document.getElementById('detailCopy'),detailChips=document.getElementById('detailChips'),detailNote=document.getElementById('detailNote'),detailLink=document.getElementById('detailLink');
-    document.querySelectorAll('.work-item').forEach(btn=>btn.addEventListener('click',()=>{
-      document.querySelectorAll('.work-item').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-      const d=data[btn.dataset.project]; detailIndex.textContent=d.index;detailStatus.textContent=d.status;detailTitle.innerHTML=d.title;detailCopy.textContent=d.copy;detailNote.textContent=d.note;detailLink.href=d.link;detailLink.textContent=d.button;
-      detailChips.innerHTML=d.chips.map(c=>`<span class="detail-chip">${c}</span>`).join('');
-      detailLink.style.pointerEvents=d.link==='#'?'none':'auto';detailLink.style.opacity=d.link==='#'?'.55':'1';
-      document.getElementById('workDetail').animate([{opacity:.68,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:280,easing:'cubic-bezier(.2,.7,.2,1)'});
-    }));
 
     // skill interactions
     const descriptions={
