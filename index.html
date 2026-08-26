@@ -8,7 +8,7 @@
   <title>Niket Fuladi | AI Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@600;700;800&family=Unbounded:wght@500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <style>
     :root{
       --paper:#f1eee8;
@@ -66,11 +66,16 @@
     .hero-left{position:relative;z-index:3}
     .eyebrow{font:500 .67rem "DM Mono";text-transform:uppercase;letter-spacing:.14em;color:var(--blue);display:flex;align-items:center;gap:10px}
     .eyebrow span{display:none}
-    h1{font:800 clamp(4.2rem,9vw,8.6rem)/.82 "Space Grotesk", sans-serif;letter-spacing:-.075em;margin:24px 0 18px;max-width:940px;text-transform:uppercase;position:relative;display:inline-block;background:linear-gradient(115deg,#101827 0%,#173a8f 26%,#74d7ff 44%,#f5fbff 50%,#5bb9ff 56%,#2b4fd6 72%,#101827 100%);background-size:240% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 1px 0 rgba(255,255,255,.5),0 8px 30px rgba(43,79,214,.10);animation:glassSweep 7s ease-in-out infinite}
+        .hero-left h1{font:700 clamp(3.65rem,8.2vw,8rem)/.84 "Unbounded", "Space Grotesk", sans-serif;letter-spacing:-.065em;margin:24px 0 14px;max-width:980px;text-transform:uppercase;position:relative;display:inline-block;isolation:isolate;cursor:default;perspective:1100px;transform-style:preserve-3d;color:#3f5e7d;background:linear-gradient(120deg,#536f88 0%,#6f8da5 24%,#a9bfce 43%,#d4e1e8 50%,#a9bfce 58%,#7693aa 78%,#556f86 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;-webkit-text-stroke:.45px rgba(74,103,128,.16);filter:drop-shadow(0 1px 0 rgba(255,255,255,.42)) drop-shadow(0 7px 16px rgba(76,112,145,.045));animation:nameFlow 12s cubic-bezier(.22,.61,.36,1) infinite;transition:transform .45s cubic-bezier(.2,.75,.2,1),filter .45s ease}
+    .hero-left h1::before{content:"";position:absolute;inset:-11% -4%;z-index:-1;border-radius:30px;background:radial-gradient(circle at 22% 35%,rgba(255,255,255,.30),transparent 25%),linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,0) 46%,rgba(123,173,210,.08) 68%,rgba(255,255,255,.06));filter:blur(18px);opacity:.20;transform:translateZ(-18px) scale(.985);animation:nameAura 10s ease-in-out infinite}
+    .hero-left h1::after{content:"";position:absolute;left:4%;top:7%;width:24%;height:3px;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.68),transparent);opacity:.045;transform:translateX(-30%) rotate(-1deg);animation:nameGlint 9s cubic-bezier(.2,.7,.2,1) infinite;pointer-events:none}
     h1 .line-a{display:inline}
     h1 .line-b{display:inline;color:transparent;-webkit-text-stroke:1.6px var(--ink)}
-    .hero-role{font:700 clamp(1.05rem,2vw,1.35rem) "Space Grotesk";display:flex;align-items:center;gap:12px;margin-top:22px}
-    .hero-role::before{display:none}
+    .hero-role{display:flex;align-items:center;gap:12px;margin-top:10px;position:relative;flex-wrap:wrap;perspective:700px}
+    .hero-role h2{margin:0;font:700 clamp(2rem,3.8vw,3.35rem)/.98 "Space Grotesk", "Manrope", sans-serif;letter-spacing:-.055em;color:#38566f;background:linear-gradient(120deg,#29445a 0%,#55758d 38%,#7194ad 55%,#3f6077 100%);background-size:180% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 1px 0 rgba(255,255,255,.28);transition:transform .32s cubic-bezier(.2,.8,.2,1),background-position .5s ease,filter .32s ease;will-change:transform;cursor:default}
+    .hero-role h2::after{content:"";display:block;width:42%;height:2px;margin-top:7px;border-radius:999px;background:linear-gradient(90deg,#55758d,rgba(85,117,141,0));transform-origin:left;transform:scaleX(.7);opacity:.55;transition:transform .35s ease,opacity .35s ease}
+    .hero-role:hover h2{background-position:100% 50%;filter:brightness(1.06);transform:translateY(-2px) rotateX(3deg)}
+    .hero-role:hover h2::after{transform:scaleX(1);opacity:.8}
     .self-led{max-width:620px;margin:16px 0 0;font:600 clamp(1rem,1.5vw,1.18rem)/1.55 "Space Grotesk",sans-serif;letter-spacing:-.025em;color:var(--ink)}
     .lede{max-width:700px;font-size:1.06rem;line-height:1.8;color:var(--muted);margin:22px 0 0}
     .lede strong{color:var(--ink)}
@@ -212,7 +217,10 @@
     .magnetic{transition:transform .16s ease}
     .mobile-menu{display:none}
 
-    @keyframes glassSweep{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+    @keyframes nameFlow{0%,100%{background-position:0% 50%;transform:translate3d(0,0,0) rotateX(0) rotateY(0)}50%{background-position:100% 50%;transform:translate3d(0,-1px,0) rotateX(.35deg) rotateY(-.35deg)}}
+    @keyframes nameAura{0%,100%{opacity:.28;transform:translateZ(-18px) scale(.985)}50%{opacity:.42;transform:translateZ(-18px) scale(1.012)}}
+    @keyframes nameGlint{0%,18%{transform:translateX(-30%);opacity:0}30%{opacity:.42}55%,100%{transform:translateX(300%);opacity:0}}
+    @keyframes nameSheen{0%,72%,100%{transform:translateX(-110%) skewX(-18deg);opacity:0}78%{opacity:.8}88%{transform:translateX(115%) skewX(-18deg);opacity:0}}
     @keyframes orbit{to{transform:rotate(360deg)}}
     @keyframes marquee{to{transform:translateX(-50%)}}
     @keyframes navPulse{0%,100%{box-shadow:0 0 0 4px rgba(63,162,106,.10)}50%{box-shadow:0 0 0 7px rgba(63,162,106,.035)}}
@@ -226,8 +234,11 @@
       .mobile-menu.open{display:grid}.mobile-menu a{padding:12px;border-radius:9px;font:500 .7rem "DM Mono";text-transform:uppercase}.mobile-menu a:hover{background:var(--ink);color:#fff}
     }
     @media(max-width:640px){
+      .hero-role{margin-top:8px;gap:8px}
+      .hero-role h2{font-size:clamp(1.7rem,8vw,2.45rem);letter-spacing:-.045em}
+      .hero-role h2::after{margin-top:5px;width:34%}
       .hero{padding-inline:18px}.section,footer{width:min(calc(100% - 36px),var(--content))}.section{padding-top:90px}.nav{top:10px;width:calc(100% - 20px)}
-      h1{font-size:clamp(3.6rem,14vw,6.2rem)}.portrait-backdrop{width:320px;height:430px}.portrait-orbit{width:350px;height:350px}.portrait-frame{width:min(320px,84vw);box-shadow:18px 18px 0 rgba(18,18,16,.9)}
+      .hero-left h1{font-size:clamp(3rem,13vw,5.6rem)}.portrait-backdrop{width:320px;height:430px}.portrait-orbit{width:350px;height:350px}.portrait-frame{width:min(320px,84vw);box-shadow:18px 18px 0 rgba(18,18,16,.9)}
       .work-detail{min-height:500px;padding:24px}.detail-title{margin-top:42px}.detail-bottom{left:24px;right:24px;bottom:24px}.section-label h2{font-size:3rem}.about-copy{font-size:1.08rem}.contact-card{padding:25px;min-height:380px}
       footer{flex-direction:column;gap:8px}
     }
@@ -565,6 +576,32 @@
           el.style.transform=`translate(${x*8}px,${y*6}px)`;
         });
         el.addEventListener('pointerleave', ()=>el.style.transform='');
+      });
+      const role = document.querySelector('.hero-role h2');
+      if (role) {
+        role.addEventListener('pointermove', e => {
+          const r = role.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - .5;
+          const y = (e.clientY - r.top) / r.height - .5;
+          role.style.transform = `translate(${x*7}px,${y*4}px) rotateX(${y*-3}deg) rotateY(${x*5}deg)`;
+        });
+        role.addEventListener('pointerleave', () => role.style.transform='');
+      }
+    }
+
+    // responsive name interaction
+    const nameEl = document.querySelector('.hero-left h1');
+    if (!reduce && nameEl) {
+      nameEl.addEventListener('pointermove', e => {
+        const r = nameEl.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        nameEl.style.transform = `perspective(1100px) rotateX(${y * -2.8}deg) rotateY(${x * 4.2}deg) translate3d(${x * 2}px, ${y * 2}px, 0)`;
+        nameEl.style.filter = `drop-shadow(${x * 5}px ${8 + y * 4}px 22px rgba(46,79,110,.13))`;
+      });
+      nameEl.addEventListener('pointerleave', () => {
+        nameEl.style.transform = '';
+        nameEl.style.filter = '';
       });
     }
 
